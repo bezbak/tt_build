@@ -1,0 +1,16 @@
+Description=gunicorn daemon
+Requires=tt_build.socket
+After=network.target
+
+[Service]
+User=bezbak
+Group=www-data
+WorkingDirectory=/home/bezbak/tt_build
+ExecStart=/home/bezbak/tt_build/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/tt_build.sock \
+          core.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
