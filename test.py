@@ -1,4 +1,16 @@
-import requests
+server {
+    listen 80;
+    server_name tommorow-techs.com www.tommorow-techs.com;
 
-r = requests.get('http://127.0.0.1:5000/')
-print(r.text)
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /assets/ {
+        root /home/bezbak/tt_build;
+    }
+}
